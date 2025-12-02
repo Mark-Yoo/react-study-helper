@@ -28,8 +28,15 @@ React Hooks를 학습하고 연습하기 위한 인터랙티브 학습 플랫폼
 - 사용자 정보 폼 (객체 state)
 - 함수형 업데이트
 
-### 🚧 02. useEffect (준비중)
-Side Effect 처리 및 컴포넌트 생명주기 관리
+### ✅ 02. useEffect (완료)
+Side Effect 처리 및 컴포넌트 생명주기 관리를 학습합니다.
+- 기본 useEffect (마운트 시 실행)
+- 의존성 배열 (특정 값 변경 감지)
+- cleanup 함수 (타이머 정리)
+- 빈 의존성 배열 (마운트 시 한 번만)
+- 여러 의존성 관리
+- 조건부 effect 실행
+- 인터벌 관리와 메모리 누수 방지
 
 ### 🚧 03. useContext (준비중)
 전역 상태 관리 및 Props Drilling 해결
@@ -87,7 +94,8 @@ React-practice/
 ├── src/
 │   ├── pages/
 │   │   ├── Home.jsx          # 홈 페이지
-│   │   └── 01-UseState.jsx   # useState 학습 페이지
+│   │   ├── 01-UseState.jsx   # useState 학습 페이지
+│   │   └── 02-UseEffect.jsx  # useEffect 학습 페이지
 │   ├── App.jsx                # 메인 앱 컴포넌트
 │   ├── App.css                # 스타일
 │   └── main.jsx               # 앱 진입점
