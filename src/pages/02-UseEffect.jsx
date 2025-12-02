@@ -35,11 +35,17 @@ function UseEffect() {
   })
 
   // 문제 1: 기본 useEffect - 마운트 시 실행
-  const [message1, setMessage1] = useState('아직 로드되지 않음')
+  // message1은 파생 상태이므로 계산된 값으로 처리
+  const message1 = (mode === 'view' || isCorrect[1])
+    ? '컴포넌트가 마운트되었습니다! 🎉'
+    : '아직 로드되지 않음'
 
   // 문제 2: 의존성 배열 - 특정 값 변경 시 실행
   const [count2, setCount2] = useState(0)
-  const [message2, setMessage2] = useState('카운트: 0')
+  // message2도 파생 상태이므로 계산된 값으로 처리
+  const message2 = (mode === 'view' || isCorrect[2])
+    ? `카운트가 변경되었습니다: ${count2}`
+    : `카운트: ${count2}`
 
   // 문제 3: cleanup 함수 - 타이머 정리
   const [seconds3, setSeconds3] = useState(0)
@@ -52,7 +58,8 @@ function UseEffect() {
   // 문제 5: 여러 의존성 - 여러 값 감시
   const [width5, setWidth5] = useState(100)
   const [height5, setHeight5] = useState(100)
-  const [area5, setArea5] = useState(0)
+  // area5는 파생 상태이므로 계산된 값으로 처리
+  const area5 = (mode === 'view' || isCorrect[5]) ? width5 * height5 : 0
 
   // 문제 6: 조건부 effect
   const [search6, setSearch6] = useState('')
@@ -63,18 +70,7 @@ function UseEffect() {
   const [timer7, setTimer7] = useState(0)
   const [isActive7, setIsActive7] = useState(false)
 
-  // 정답일 때만 useEffect 실행
-  useEffect(() => {
-    if (mode === 'view' || isCorrect[1]) {
-      setMessage1('컴포넌트가 마운트되었습니다! 🎉')
-    }
-  }, [mode, isCorrect])
-
-  useEffect(() => {
-    if (mode === 'view' || isCorrect[2]) {
-      setMessage2(`카운트가 변경되었습니다: ${count2}`)
-    }
-  }, [count2, mode, isCorrect])
+  // 문제 3: cleanup 함수가 필요한 타이머 (useEffect 유지)
 
   useEffect(() => {
     if ((mode === 'view' || isCorrect[3]) && isRunning3) {
@@ -83,39 +79,48 @@ function UseEffect() {
       }, 1000)
       return () => clearInterval(timer)
     }
-  }, [isRunning3, mode, isCorrect])
+  }, [isRunning3, mode, isCorrect[3]])
 
+  // 문제 4: 빈 의존성 배열 - 마운트 시 한 번만 (useEffect 유지)
   useEffect(() => {
     if (mode === 'view' || isCorrect[4]) {
-      // 가짜 데이터 로드 시뮬레이션
-      setTimeout(() => {
-        setData4({ id: 1, title: '데이터 로드 완료!' })
-        setLoading4(false)
-      }, 1000)
+      // 이미 로드했다면 다시 로드하지 않음
+      if (data4 === null && !loading4) {
+        // 모든 setState를 비동기 콜백 안에서 호출
+        const timer = setTimeout(() => {
+          setLoading4(true)
+          setTimeout(() => {
+            setData4({ id: 1, title: '데이터 로드 완료!' })
+            setLoading4(false)
+          }, 1000)
+        }, 0)
+        return () => clearTimeout(timer)
+      }
     }
-  }, [mode, isCorrect])
+  }, [mode, isCorrect[4], data4, loading4])
 
+  // 문제 6: 조건부 effect - 검색 실행 (useEffect 유지)
   useEffect(() => {
-    if (mode === 'view' || isCorrect[5]) {
-      setArea5(width5 * height5)
-    }
-  }, [width5, height5, mode, isCorrect])
+    // 모든 setState를 비동기 콜백 안에서 호출
+    const timer = setTimeout(() => {
+      if ((mode === 'view' || isCorrect[6]) && search6.length >= 2) {
+        // 검색 시뮬레이션
+        const mockResults = [
+          `${search6}에 대한 결과 1`,
+          `${search6}에 대한 결과 2`,
+          `${search6}에 대한 결과 3`
+        ]
+        setResults6(mockResults)
+        setSearchCount6(prev => prev + 1)
+      } else {
+        setResults6([])
+      }
+    }, 0)
 
-  useEffect(() => {
-    if ((mode === 'view' || isCorrect[6]) && search6.length >= 2) {
-      // 검색 시뮬레이션
-      const mockResults = [
-        `${search6}에 대한 결과 1`,
-        `${search6}에 대한 결과 2`,
-        `${search6}에 대한 결과 3`
-      ]
-      setResults6(mockResults)
-      setSearchCount6(prev => prev + 1)
-    } else {
-      setResults6([])
-    }
-  }, [search6, mode, isCorrect])
+    return () => clearTimeout(timer)
+  }, [search6, mode, isCorrect[6]])
 
+  // 문제 7: 인터벌 관리 - 타이머 (useEffect 유지)
   useEffect(() => {
     if ((mode === 'view' || isCorrect[7]) && isActive7) {
       const interval = setInterval(() => {
@@ -123,7 +128,7 @@ function UseEffect() {
       }, 1000)
       return () => clearInterval(interval)
     }
-  }, [isActive7, mode, isCorrect])
+  }, [isActive7, mode, isCorrect[7]])
 
   // 정답 패턴 정의
   const correctAnswers = {
