@@ -1,0 +1,873 @@
+/* 앱 컨테이너 - 라우팅 레이아웃 */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* 사이드바 네비게이션 */
+.sidebar {
+  width: 250px;
+  background: #1a1a1a;
+  border-right: 2px solid #333;
+  padding: 2rem 1rem;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.sidebar-header h2 {
+  color: #646cff;
+  margin: 0 0 0.5rem 0;
+}
+
+.sidebar-header p {
+  color: #888;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list li {
+  margin-bottom: 0.5rem;
+}
+
+.nav-list li a,
+.nav-list li span {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.nav-list li a:hover {
+  background: #2a2a2a;
+  color: #646cff;
+}
+
+.nav-list li a.active {
+  background: #646cff;
+  color: white;
+}
+
+.nav-list li.disabled span {
+  color: #555;
+  cursor: not-allowed;
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+/* 페이지 컨텐츠 */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* 홈 페이지 스타일 */
+.home-container {
+  max-width: 1000px;
+}
+
+.lesson-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.lesson-card {
+  background: #2a2a2a;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.lesson-card:hover {
+  border-color: #646cff;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(100, 108, 255, 0.2);
+}
+
+.lesson-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.lesson-card.disabled:hover {
+  transform: none;
+  border-color: #333;
+  box-shadow: none;
+}
+
+.lesson-card h3 {
+  color: #646cff;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.lesson-card p {
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.lesson-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.lesson-card ul li {
+  color: #888;
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.lesson-card ul li:before {
+  content: "→ ";
+  color: #646cff;
+  margin-right: 0.5rem;
+}
+
+.app h1 {
+  text-align: center;
+  color: #646cff;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+}
+
+/* 예제 섹션 공통 스타일 */
+.example-section {
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.example-section h2 {
+  color: #61dafb;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+/* 1. Counter 스타일 */
+.counter {
+  text-align: center;
+}
+
+.counter h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.button-group button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: #646cff;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.button-group button:hover {
+  background-color: #535bf2;
+  transform: translateY(-2px);
+}
+
+/* 2. Input 스타일 */
+.input-example {
+  text-align: center;
+}
+
+.input-example input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #2a2a2a;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.input-example input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+.message {
+  color: #61dafb;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* 3. Toggle 스타일 */
+.toggle-example {
+  text-align: center;
+}
+
+.toggle-example button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: #61dafb;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.toggle-example button:hover {
+  background-color: #4fc3f7;
+  transform: scale(1.05);
+}
+
+.hidden-content {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #2a2a2a;
+  border-radius: 8px;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 4. Todo List 스타일 */
+.todo-example {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.todo-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.todo-input input {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #2a2a2a;
+  color: white;
+}
+
+.todo-input input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+.todo-input button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: #646cff;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.todo-input button:hover {
+  background-color: #535bf2;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.todo-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  background: #2a2a2a;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.todo-list li span {
+  flex: 1;
+  text-align: left;
+}
+
+.todo-list li button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background-color: #ef4444;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.todo-list li button:hover {
+  background-color: #dc2626;
+}
+
+/* 5. Form 스타일 */
+.form-example {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #61dafb;
+  font-weight: bold;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #2a2a2a;
+  color: white;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
+.user-info {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #2a2a2a;
+  border-radius: 8px;
+  border: 2px solid #646cff;
+}
+
+.user-info h4 {
+  margin-top: 0;
+  color: #61dafb;
+}
+
+.user-info pre {
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  text-align: left;
+  color: #61dafb;
+}
+
+/* 테스트 페이지 스타일 */
+.test-info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.test-info h2 {
+  color: white;
+  border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.score-display {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.score-display h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.problem-section {
+  border-left: 4px solid #646cff;
+}
+
+.problem-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.problem-header h2 {
+  margin-bottom: 0;
+}
+
+.difficulty {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.difficulty.easy {
+  background: #10b981;
+  color: white;
+}
+
+.difficulty.medium {
+  background: #f59e0b;
+  color: white;
+}
+
+.difficulty.hard {
+  background: #ef4444;
+  color: white;
+}
+
+.problem-description h3 {
+  color: #61dafb;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.problem-description ul {
+  margin: 0.5rem 0;
+}
+
+.problem-description li {
+  margin-bottom: 0.5rem;
+  color: #ccc;
+}
+
+.problem-workspace {
+  background: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.result-area {
+  text-align: center;
+}
+
+.problem-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.hint-btn, .answer-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.hint-btn {
+  background: #f59e0b;
+  color: white;
+}
+
+.hint-btn:hover {
+  background: #d97706;
+}
+
+.answer-btn {
+  background: #10b981;
+  color: white;
+}
+
+.answer-btn:hover {
+  background: #059669;
+}
+
+.hint-box, .answer-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  animation: fadeIn 0.3s;
+}
+
+.hint-box {
+  background: rgba(245, 158, 11, 0.1);
+  border: 2px solid #f59e0b;
+  color: #fbbf24;
+}
+
+.answer-box {
+  background: rgba(16, 185, 129, 0.1);
+  border: 2px solid #10b981;
+  color: #34d399;
+}
+
+.answer-box pre {
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-top: 0.5rem;
+}
+
+.result-section {
+  border: 3px solid #646cff;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.final-score {
+  text-align: center;
+  padding: 2rem;
+}
+
+.final-score h3 {
+  font-size: 2rem;
+  color: #646cff;
+  margin-bottom: 1rem;
+}
+
+.congrats {
+  color: #10b981;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.good {
+  color: #3b82f6;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.okay {
+  color: #f59e0b;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.need-practice {
+  color: #ef4444;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.review-list {
+  background: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+
+.review-list h4 {
+  color: #61dafb;
+  margin-top: 0;
+}
+
+.review-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.review-list li {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: #1a1a1a;
+  border-radius: 6px;
+  border-left: 4px solid #333;
+  transition: all 0.3s;
+}
+
+.review-list li.completed {
+  border-left-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+/* 모드 토글 버튼 */
+.mode-toggle {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.mode-toggle button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid #646cff;
+  background: transparent;
+  color: #646cff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.mode-toggle button:hover {
+  background: rgba(100, 108, 255, 0.1);
+}
+
+.mode-toggle button.active {
+  background: #646cff;
+  color: white;
+}
+
+/* 코드 에디터 섹션 */
+.code-editor-section {
+  background: #0d1117;
+  border: 2px solid #30363d;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.code-editor-section h4 {
+  color: #61dafb;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.code-hint {
+  color: #8b949e;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.code-template {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+.code-template pre {
+  margin: 0;
+  color: #c9d1d9;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.code-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 1rem;
+  background: #0d1117;
+  border: 2px solid #30363d;
+  border-radius: 6px;
+  color: #c9d1d9;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+
+.code-input:focus {
+  outline: none;
+  border-color: #646cff;
+  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.1);
+}
+
+.code-input::placeholder {
+  color: #6e7681;
+}
+
+/* 코드 확인 버튼 및 피드백 */
+.code-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.check-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid #10b981;
+  background: #10b981;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.check-btn:hover {
+  background: #059669;
+  border-color: #059669;
+}
+
+.feedback {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  animation: fadeIn 0.3s;
+}
+
+.feedback.correct {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid #10b981;
+}
+
+.feedback.incorrect {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+/* 정답 배지 */
+.problem-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.badge-correct {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: #10b981;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* 잠금 메시지 */
+.locked-message {
+  color: #f59e0b;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(245, 158, 11, 0.1);
+  border: 2px solid #f59e0b;
+  border-radius: 8px;
+}
+
+/* 비활성화된 버튼 및 입력 */
+button:disabled,
+input:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 정답 개수 표시 */
+.correct-count {
+  font-size: 1rem;
+  color: #10b981;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 2px solid #333;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .app-container {
+    flex-direction: column;
+  }
+
+  .lesson-list {
+    grid-template-columns: 1fr;
+  }
+
+  .app h1 {
+    font-size: 2rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .todo-input {
+    flex-direction: column;
+  }
+
+  .problem-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .problem-controls {
+    flex-direction: column;
+  }
+
+  .final-score h3 {
+    font-size: 1.5rem;
+  }
+}
