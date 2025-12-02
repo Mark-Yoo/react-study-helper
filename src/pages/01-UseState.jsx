@@ -922,8 +922,9 @@ setItems(items.filter(item => item.id !== id))`}</pre>
 
         {showHint[6] && (
           <div className="hint-box">
-            <strong>💡 힌트:</strong> 객체 spread 연산자 {user.name}, {user.age}
-            를 사용하여 기존 속성을 복사하고, 변경할 속성만 덮어쓰세요.
+            <strong>💡 힌트:</strong> 객체 spread 연산자{" "}
+            <code>{"{...user }"}</code>를 사용하여 기존 속성을 복사하고, 변경할
+            속성만 덮어쓰세요.
           </div>
         )}
 
