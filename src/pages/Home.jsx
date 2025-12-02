@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import '../App.css'
+import { Link } from "react-router-dom";
+import "../App.css";
 
 function Home() {
   return (
@@ -26,15 +26,15 @@ function Home() {
               </ul>
             </Link>
 
-            <div className="lesson-card disabled">
-              <h3>02. useEffect (준비중)</h3>
+            <Link tp="/02-useeffect" className="lesson-card">
+              <h3>02. useEffect</h3>
               <p>Side Effect를 처리하는 Hook</p>
               <ul>
                 <li>컴포넌트 생명주기</li>
                 <li>데이터 fetching</li>
                 <li>구독과 정리</li>
               </ul>
-            </div>
+            </Link>
 
             <div className="lesson-card disabled">
               <h3>03. useContext (준비중)</h3>
@@ -60,11 +60,13 @@ function Home() {
 
         <section className="example-section">
           <h2>시작하기</h2>
-          <p>왼쪽 메뉴나 위의 학습 목록에서 원하는 Hook을 선택하여 시작하세요!</p>
+          <p>
+            왼쪽 메뉴나 위의 학습 목록에서 원하는 Hook을 선택하여 시작하세요!
+          </p>
         </section>
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

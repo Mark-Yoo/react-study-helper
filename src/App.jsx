@@ -1,10 +1,11 @@
-import { Routes, Route, Link, useLocation } from 'react-router-dom'
-import Home from './pages/Home'
-import UseState from './pages/01-UseState'
-import './App.css'
+import { Routes, Route, Link, useLocation } from "react-router-dom";
+import Home from "./pages/Home";
+import UseState from "./pages/01-UseState";
+import UseEffect from "./pages/02-UseEffect";
+import "./App.css";
 
 function App() {
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <div className="app-container">
@@ -16,21 +17,26 @@ function App() {
 
         <ul className="nav-list">
           <li>
-            <Link
-              to="/"
-              className={location.pathname === '/' ? 'active' : ''}
-            >
+            <Link to="/" className={location.pathname === "/" ? "active" : ""}>
               🏠 홈
             </Link>
           </li>
           <li>
             <Link
               to="/01-usestate"
-              className={location.pathname === '/01-usestate' ? 'active' : ''}
+              className={location.pathname === "/01-usestate" ? "active" : ""}
             >
               01. useState
             </Link>
           </li>
+          {/* <li>
+            <Link
+              to="/02-useeffect"
+              className={location.pathname === "/02-useeffect" ? "active" : ""}
+            >
+              02. useEffect
+            </Link>
+          </li> */}
           <li className="disabled">
             <span>02. useEffect (준비중)</span>
           </li>
@@ -47,10 +53,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/01-usestate" element={<UseState />} />
+          <Route path="/02-useeffect" element={<UseEffect />} />
         </Routes>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
