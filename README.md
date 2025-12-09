@@ -56,7 +56,17 @@ Side Effect 처리 및 컴포넌트 생명주기 관리를 학습합니다.
 ### 🚧 03. useContext (준비중)
 전역 상태 관리 및 Props Drilling 해결
 
-### 🚧 04. useRef (준비중)
+### ✅ 04. useReducer (완료)
+복잡한 상태 로직 관리를 위한 Hook을 학습합니다.
+- 기본 카운터 (reducer와 dispatch 사용법)
+- 입력 필드 관리 (payload를 통한 데이터 전달)
+- 체크박스 토글 (간단한 액션 타입)
+- 색상 선택기 (동적 payload 값 전달)
+- 할일 리스트 (배열 상태 관리 - 추가/삭제)
+- 사용자 정보 폼 (복잡한 객체 상태 관리)
+- 비동기 상태 관리 (로딩, 데이터, 에러 처리)
+
+### 🚧 05. useRef (준비중)
 DOM 참조 및 값 저장
 
 ## 🛠️ 기술 스택
@@ -111,6 +121,7 @@ React-practice/
 │   │   ├── Home.jsx           # 홈 페이지
 │   │   ├── 01-UseState.jsx    # useState 학습 페이지
 │   │   ├── 02-UseEffect.jsx   # useEffect 학습 페이지
+│   │   ├── 04-UseReducer.jsx  # useReducer 학습 페이지
 │   │   └── 05-Buildup.jsx     # JavaScript ES6+ 학습 페이지
 │   ├── App.jsx                 # 메인 앱 컴포넌트
 │   ├── App.css                 # 스타일
