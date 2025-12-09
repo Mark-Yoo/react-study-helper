@@ -2,6 +2,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import UseState from "./pages/01-UseState";
 import UseEffect from "./pages/02-UseEffect";
+import UseReducer from "./pages/04-UseReducer";
 import "./App.css";
 
 function App() {
@@ -43,8 +44,13 @@ function App() {
           <li className="disabled">
             <span>03. useContext (준비중)</span>
           </li>
-          <li className="disabled">
-            <span>04. useRef (준비중)</span>
+          <li>
+            <Link
+              to="/04-usereducer"
+              className={location.pathname === "/04-usereducer" ? "active" : ""}
+            >
+              04. useReducer
+            </Link>
           </li>
         </ul>
       </nav>
@@ -54,6 +60,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/01-usestate" element={<UseState />} />
           <Route path="/02-useeffect" element={<UseEffect />} />
+          <Route path="/04-usereducer" element={<UseReducer />} />
         </Routes>
       </main>
     </div>
