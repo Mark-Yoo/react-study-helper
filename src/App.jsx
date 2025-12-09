@@ -2,6 +2,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import UseState from "./pages/01-UseState";
 import UseEffect from "./pages/02-UseEffect";
+import Buildup from "./pages/05-Buildup";
 import "./App.css";
 
 function App() {
@@ -46,6 +47,14 @@ function App() {
           <li className="disabled">
             <span>04. useRef (준비중)</span>
           </li>
+          <li>
+            <Link
+              to="/05-buildup"
+              className={location.pathname === "/05-buildup" ? "active" : ""}
+            >
+              05. JavaScript 빌드업
+            </Link>
+          </li>
         </ul>
       </nav>
 
@@ -54,6 +63,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/01-usestate" element={<UseState />} />
           <Route path="/02-useeffect" element={<UseEffect />} />
+          <Route path="/05-buildup" element={<Buildup />} />
         </Routes>
       </main>
     </div>

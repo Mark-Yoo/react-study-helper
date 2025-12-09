@@ -1,5 +1,15 @@
 import { useState } from "react";
 import "../App.css";
+import {
+  TestInfo,
+  ProblemHeader,
+  ProblemDescription,
+  CodeEditor,
+  ProblemControls,
+  HintBox,
+  AnswerBox,
+  ResultSection
+} from "../components";
 
 function UseState() {
   // 모드 관리: 'view' (정답 보기) 또는 'practice' (연습 모드)
@@ -165,88 +175,45 @@ function UseState() {
     <div className="app">
       <h1>useState 테스트</h1>
 
-      <div className="test-info example-section">
-        <h2>📝 테스트 안내</h2>
-        <p>각 문제의 요구사항을 읽고 useState를 사용하여 기능을 구현하세요.</p>
-        <p>코드를 작성한 후 "코드 확인" 버튼을 클릭하여 정답을 확인하세요.</p>
-        <p>정답이 맞으면 해당 기능이 활성화되고 점수가 부여됩니다!</p>
-
-        <div className="mode-toggle">
-          <button
-            className={mode === "practice" ? "active" : ""}
-            onClick={() => setMode("practice")}
-          >
-            연습 모드
-          </button>
-          <button
-            className={mode === "view" ? "active" : ""}
-            onClick={() => setMode("view")}
-          >
-            정답 보기 모드
-          </button>
-        </div>
-
-        <div className="score-display">
-          <h3>현재 점수: {calculateScore()}점 / 100점</h3>
-          <p className="correct-count">
-            정답 개수: {Object.values(isCorrect).filter((v) => v).length} / 7
-          </p>
-        </div>
-      </div>
+      <TestInfo
+        title="useState"
+        mode={mode}
+        setMode={setMode}
+        score={calculateScore()}
+        correctCount={Object.values(isCorrect).filter((v) => v).length}
+      />
 
       {/* 문제 1: 카운터 (15점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 1. 기본 카운터 (15점)</h2>
-          <div className="header-right">
-            <span className="difficulty easy">난이도: ⭐</span>
-            {isCorrect[1] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>버튼을 클릭하면 숫자가 1씩 증가해야 합니다</li>
-            <li>현재 카운트 값을 화면에 표시해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 1. 기본 카운터 (15점)"
+          difficulty="easy"
+          isCorrect={isCorrect[1]}
+        />
+        <ProblemDescription
+          requirements={[
+            "버튼을 클릭하면 숫자가 1씩 증가해야 합니다",
+            "현재 카운트 값을 화면에 표시해야 합니다"
+          ]}
+        />
 
         {mode === "practice" && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">아래 코드의 빈 칸을 채워보세요:</p>
-            <div className="code-template">
-              <pre>{`const [count, setCount] = useState(0)
+          <CodeEditor
+            codeTemplate={`const [count, setCount] = useState(0)
 
 // 버튼 클릭 시 실행될 함수:
 const handleClick = () => {
   // 여기에 코드를 작성하세요
 
-}`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="setCount 함수를 사용하여 count를 1씩 증가시키는 코드를 작성하세요&#10;예: setCount(count + 1)"
-              value={userCode[1]}
-              onChange={(e) => updateUserCode(1, e.target.value)}
-              rows={3}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(1)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[1] === "correct" && (
-                <span className="feedback correct">
-                  ✓ 정답입니다! 기능이 활성화되었습니다.
-                </span>
-              )}
-              {feedback[1] === "incorrect" && (
-                <span className="feedback incorrect">
-                  ✗ 다시 시도해보세요. 힌트를 참고하세요.
-                </span>
-              )}
-            </div>
-          </div>
+}`}
+            hint="아래 코드의 빈 칸을 채워보세요:"
+            placeholder="setCount 함수를 사용하여 count를 1씩 증가시키는 코드를 작성하세요&#10;예: setCount(count + 1)"
+            userCode={userCode[1]}
+            onChange={(e) => updateUserCode(1, e.target.value)}
+            onCheck={() => checkAnswer(1)}
+            feedback={feedback[1]}
+            rows={3}
+          />
         )}
 
         <div className="problem-workspace">
@@ -269,58 +236,46 @@ const handleClick = () => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(1)} className="hint-btn">
-            {showHint[1] ? "힌트 숨기기" : "힌트 보기"}
-          </button>
-          <button onClick={() => toggleAnswer(1)} className="answer-btn">
-            {showAnswer[1] ? "정답 숨기기" : "정답 보기"}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[1]}
+          showAnswer={showAnswer[1]}
+          onToggleHint={() => toggleHint(1)}
+          onToggleAnswer={() => toggleAnswer(1)}
+        />
 
         {showHint[1] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> setCount 함수를 사용하여 현재 count에 1을
-            더한 값으로 업데이트하세요.
-          </div>
+          <HintBox>
+            setCount 함수를 사용하여 현재 count에 1을 더한 값으로 업데이트하세요.
+          </HintBox>
         )}
 
         {showAnswer[1] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`const [count, setCount] = useState(0)
 
 // 버튼 클릭 시:
 onClick={() => setCount(count + 1)}`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 2: 입력 필드 (10점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 2. 입력 필드 관리 (10점)</h2>
-          <div className="header-right">
-            <span className="difficulty easy">난이도: ⭐</span>
-            {isCorrect[2] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>
-              입력 필드에 타이핑한 내용이 실시간으로 아래에 표시되어야 합니다
-            </li>
-            <li>입력값은 inputValue state로 관리해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 2. 입력 필드 관리 (10점)"
+          difficulty="easy"
+          isCorrect={isCorrect[2]}
+        />
+        <ProblemDescription
+          requirements={[
+            "입력 필드에 타이핑한 내용이 실시간으로 아래에 표시되어야 합니다",
+            "입력값은 inputValue state로 관리해야 합니다"
+          ]}
+        />
 
         {mode === "practice" && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">input의 onChange 핸들러를 작성하세요:</p>
-            <div className="code-template">
-              <pre>{`const [inputValue, setInputValue] = useState('')
+          <CodeEditor
+            codeTemplate={`const [inputValue, setInputValue] = useState('')
 
 <input
   type="text"
@@ -329,27 +284,15 @@ onClick={() => setCount(count + 1)}`}</pre>
     // 여기에 코드를 작성하세요
 
   }}
-/>`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="e.target.value를 사용하여 inputValue를 업데이트하는 코드를 작성하세요&#10;예: setInputValue(e.target.value)"
-              value={userCode[2]}
-              onChange={(e) => updateUserCode(2, e.target.value)}
-              rows={2}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(2)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[2] === "correct" && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[2] === "incorrect" && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+/>`}
+            hint="input의 onChange 핸들러를 작성하세요:"
+            placeholder="e.target.value를 사용하여 inputValue를 업데이트하는 코드를 작성하세요&#10;예: setInputValue(e.target.value)"
+            userCode={userCode[2]}
+            onChange={(e) => updateUserCode(2, e.target.value)}
+            onCheck={() => checkAnswer(2)}
+            feedback={feedback[2]}
+            rows={2}
+          />
         )}
 
         <div className="problem-workspace">
@@ -372,58 +315,46 @@ onClick={() => setCount(count + 1)}`}</pre>
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(2)} className="hint-btn">
-            {showHint[2] ? "힌트 숨기기" : "힌트 보기"}
-          </button>
-          <button onClick={() => toggleAnswer(2)} className="answer-btn">
-            {showAnswer[2] ? "정답 숨기기" : "정답 보기"}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[2]}
+          showAnswer={showAnswer[2]}
+          onToggleHint={() => toggleHint(2)}
+          onToggleAnswer={() => toggleAnswer(2)}
+        />
 
         {showHint[2] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> onChange 이벤트에서 e.target.value를
-            사용하여 입력값을 가져오세요.
-          </div>
+          <HintBox>
+            onChange 이벤트에서 e.target.value를 사용하여 입력값을 가져오세요.
+          </HintBox>
         )}
 
         {showAnswer[2] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`const [inputValue, setInputValue] = useState('')
 
 // input의 onChange:
 onChange={(e) => setInputValue(e.target.value)}`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 3: 체크박스 토글 (10점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 3. 체크박스 토글 (10점)</h2>
-          <div className="header-right">
-            <span className="difficulty easy">난이도: ⭐</span>
-            {isCorrect[3] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>체크박스를 클릭하면 체크 상태가 토글되어야 합니다</li>
-            <li>체크 여부에 따라 다른 메시지를 표시해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 3. 체크박스 토글 (10점)"
+          difficulty="easy"
+          isCorrect={isCorrect[3]}
+        />
+        <ProblemDescription
+          requirements={[
+            "체크박스를 클릭하면 체크 상태가 토글되어야 합니다",
+            "체크 여부에 따라 다른 메시지를 표시해야 합니다"
+          ]}
+        />
 
         {mode === "practice" && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">
-              체크박스의 onChange 핸들러를 작성하세요:
-            </p>
-            <div className="code-template">
-              <pre>{`const [isChecked, setIsChecked] = useState(false)
+          <CodeEditor
+            codeTemplate={`const [isChecked, setIsChecked] = useState(false)
 
 <input
   type="checkbox"
@@ -432,27 +363,15 @@ onChange={(e) => setInputValue(e.target.value)}`}</pre>
     // 여기에 코드를 작성하세요
 
   }}
-/>`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="! 연산자를 사용하여 isChecked를 토글하는 코드를 작성하세요&#10;예: setIsChecked(!isChecked)"
-              value={userCode[3]}
-              onChange={(e) => updateUserCode(3, e.target.value)}
-              rows={2}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(3)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[3] === "correct" && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[3] === "incorrect" && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+/>`}
+            hint="체크박스의 onChange 핸들러를 작성하세요:"
+            placeholder="! 연산자를 사용하여 isChecked를 토글하는 코드를 작성하세요&#10;예: setIsChecked(!isChecked)"
+            userCode={userCode[3]}
+            onChange={(e) => updateUserCode(3, e.target.value)}
+            onCheck={() => checkAnswer(3)}
+            feedback={feedback[3]}
+            rows={2}
+          />
         )}
 
         <div className="problem-workspace">
@@ -477,80 +396,58 @@ onChange={(e) => setInputValue(e.target.value)}`}</pre>
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(3)} className="hint-btn">
-            {showHint[3] ? "힌트 숨기기" : "힌트 보기"}
-          </button>
-          <button onClick={() => toggleAnswer(3)} className="answer-btn">
-            {showAnswer[3] ? "정답 숨기기" : "정답 보기"}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[3]}
+          showAnswer={showAnswer[3]}
+          onToggleHint={() => toggleHint(3)}
+          onToggleAnswer={() => toggleAnswer(3)}
+        />
 
         {showHint[3] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> Boolean state는 !를 사용하여 반대값으로
-            토글할 수 있습니다.
-          </div>
+          <HintBox>
+            Boolean state는 !를 사용하여 반대값으로 토글할 수 있습니다.
+          </HintBox>
         )}
 
         {showAnswer[3] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`const [isChecked, setIsChecked] = useState(false)
 
 // 체크박스 onChange:
 onChange={() => setIsChecked(!isChecked)}`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 4: 색상 선택 (10점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 4. 색상 선택기 (10점)</h2>
-          <div className="header-right">
-            <span className="difficulty medium">난이도: ⭐⭐</span>
-            {isCorrect[4] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>버튼을 클릭하면 해당 색상이 선택되어야 합니다</li>
-            <li>선택된 색상으로 박스의 배경색이 변경되어야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 4. 색상 선택기 (10점)"
+          difficulty="medium"
+          isCorrect={isCorrect[4]}
+        />
+        <ProblemDescription
+          requirements={[
+            "버튼을 클릭하면 해당 색상이 선택되어야 합니다",
+            "선택된 색상으로 박스의 배경색이 변경되어야 합니다"
+          ]}
+        />
 
         {mode === "practice" && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">각 버튼의 onClick 핸들러를 작성하세요:</p>
-            <div className="code-template">
-              <pre>{`const [selectedColor, setSelectedColor] = useState('blue')
+          <CodeEditor
+            codeTemplate={`const [selectedColor, setSelectedColor] = useState('blue')
 
 <button onClick={() => { /* 빨강 버튼 */ }}>빨강</button>
 <button onClick={() => { /* 초록 버튼 */ }}>초록</button>
-<button onClick={() => { /* 파랑 버튼 */ }}>파랑</button>`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="setSelectedColor를 사용하여 색상을 변경하는 코드를 작성하세요&#10;예: setSelectedColor('red')"
-              value={userCode[4]}
-              onChange={(e) => updateUserCode(4, e.target.value)}
-              rows={3}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(4)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[4] === "correct" && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[4] === "incorrect" && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+<button onClick={() => { /* 파랑 버튼 */ }}>파랑</button>`}
+            hint="각 버튼의 onClick 핸들러를 작성하세요:"
+            placeholder="setSelectedColor를 사용하여 색상을 변경하는 코드를 작성하세요&#10;예: setSelectedColor('red')"
+            userCode={userCode[4]}
+            onChange={(e) => updateUserCode(4, e.target.value)}
+            onCheck={() => checkAnswer(4)}
+            feedback={feedback[4]}
+            rows={3}
+          />
         )}
 
         <div className="problem-workspace">
@@ -600,64 +497,49 @@ onChange={() => setIsChecked(!isChecked)}`}</pre>
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(4)} className="hint-btn">
-            {showHint[4] ? "힌트 숨기기" : "힌트 보기"}
-          </button>
-          <button onClick={() => toggleAnswer(4)} className="answer-btn">
-            {showAnswer[4] ? "정답 숨기기" : "정답 보기"}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[4]}
+          showAnswer={showAnswer[4]}
+          onToggleHint={() => toggleHint(4)}
+          onToggleAnswer={() => toggleAnswer(4)}
+        />
 
         {showHint[4] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> 각 버튼의 onClick에서 setSelectedColor에
-            색상 문자열을 전달하세요.
-          </div>
+          <HintBox>
+            각 버튼의 onClick에서 setSelectedColor에 색상 문자열을 전달하세요.
+          </HintBox>
         )}
 
         {showAnswer[4] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`const [selectedColor, setSelectedColor] = useState('blue')
 
 // 버튼 onClick:
 onClick={() => setSelectedColor('red')}
 onClick={() => setSelectedColor('green')}
 onClick={() => setSelectedColor('blue')}`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 5: 리스트 관리 (20점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 5. 할일 리스트 (20점)</h2>
-          <div className="header-right">
-            <span className="difficulty hard">난이도: ⭐⭐⭐</span>
-            {isCorrect[5] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>
-              입력 필드에 할일을 입력하고 추가 버튼을 클릭하면 리스트에
-              추가되어야 합니다
-            </li>
-            <li>
-              각 항목 옆의 삭제 버튼을 클릭하면 해당 항목이 제거되어야 합니다
-            </li>
-            <li>배열 state를 사용해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 5. 할일 리스트 (20점)"
+          difficulty="hard"
+          isCorrect={isCorrect[5]}
+        />
+        <ProblemDescription
+          requirements={[
+            "입력 필드에 할일을 입력하고 추가 버튼을 클릭하면 리스트에 추가되어야 합니다",
+            "각 항목 옆의 삭제 버튼을 클릭하면 해당 항목이 제거되어야 합니다",
+            "배열 state를 사용해야 합니다"
+          ]}
+        />
 
         {mode === "practice" && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">추가 및 삭제 함수를 작성하세요:</p>
-            <div className="code-template">
-              <pre>{`const [items, setItems] = useState([])
+          <CodeEditor
+            codeTemplate={`const [items, setItems] = useState([])
 const [newItem, setNewItem] = useState('')
 
 // 추가 함수
@@ -672,27 +554,15 @@ const addItem = () => {
 const deleteItem = (id) => {
   // 여기에 코드를 작성하세요
 
-}`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="spread 연산자와 filter를 사용하세요&#10;추가: setItems([...items, { id: Date.now(), text: newItem }])&#10;삭제: setItems(items.filter(item => item.id !== id))"
-              value={userCode[5]}
-              onChange={(e) => updateUserCode(5, e.target.value)}
-              rows={4}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(5)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[5] === "correct" && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[5] === "incorrect" && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}`}
+            hint="추가 및 삭제 함수를 작성하세요:"
+            placeholder="spread 연산자와 filter를 사용하세요&#10;추가: setItems([...items, { id: Date.now(), text: newItem }])&#10;삭제: setItems(items.filter(item => item.id !== id))"
+            userCode={userCode[5]}
+            onChange={(e) => updateUserCode(5, e.target.value)}
+            onCheck={() => checkAnswer(5)}
+            feedback={feedback[5]}
+            rows={4}
+          />
         )}
 
         <div className="problem-workspace">
@@ -759,28 +629,24 @@ const deleteItem = (id) => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(5)} className="hint-btn">
-            {showHint[5] ? "힌트 숨기기" : "힌트 보기"}
-          </button>
-          <button onClick={() => toggleAnswer(5)} className="answer-btn">
-            {showAnswer[5] ? "정답 숨기기" : "정답 보기"}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[5]}
+          showAnswer={showAnswer[5]}
+          onToggleHint={() => toggleHint(5)}
+          onToggleAnswer={() => toggleAnswer(5)}
+        />
 
         {showHint[5] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong>
+          <HintBox>
             <ul>
               <li>배열에 추가: spread 연산자 [...items, newItem] 사용</li>
               <li>배열에서 삭제: filter 메서드 사용</li>
             </ul>
-          </div>
+          </HintBox>
         )}
 
         {showAnswer[5] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`const [items, setItems] = useState([])
 const [newItem, setNewItem] = useState('')
 
@@ -790,37 +656,28 @@ setNewItem('')
 
 // 삭제:
 setItems(items.filter(item => item.id !== id))`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 6: 객체 상태 관리 (15점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 6. 사용자 정보 폼 (15점)</h2>
-          <div className="header-right">
-            <span className="difficulty hard">난이도: ⭐⭐⭐</span>
-            {isCorrect[6] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>이름과 나이를 입력받는 폼을 만들어야 합니다</li>
-            <li>
-              각 입력 필드가 변경될 때마다 user 객체의 해당 속성만
-              업데이트되어야 합니다
-            </li>
-            <li>나머지 속성은 유지되어야 합니다 (불변성 유지)</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 6. 사용자 정보 폼 (15점)"
+          difficulty="hard"
+          isCorrect={isCorrect[6]}
+        />
+        <ProblemDescription
+          requirements={[
+            "이름과 나이를 입력받는 폼을 만들어야 합니다",
+            "각 입력 필드가 변경될 때마다 user 객체의 해당 속성만 업데이트되어야 합니다",
+            "나머지 속성은 유지되어야 합니다 (불변성 유지)"
+          ]}
+        />
 
         {mode === "practice" && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">객체 spread 연산자를 사용하세요:</p>
-            <div className="code-template">
-              <pre>{`const [user, setUser] = useState({ name: '', age: '' })
+          <CodeEditor
+            codeTemplate={`const [user, setUser] = useState({ name: '', age: '' })
 
 // 이름 변경
 <input
@@ -838,27 +695,15 @@ setItems(items.filter(item => item.id !== id))`}</pre>
     // 여기에 코드를 작성하세요
 
   }}
-/>`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="객체 spread 연산자를 사용하세요&#10;예: setUser({ ...user, name: e.target.value })"
-              value={userCode[6]}
-              onChange={(e) => updateUserCode(6, e.target.value)}
-              rows={3}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(6)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[6] === "correct" && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[6] === "incorrect" && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+/>`}
+            hint="객체 spread 연산자를 사용하세요:"
+            placeholder="객체 spread 연산자를 사용하세요&#10;예: setUser({ ...user, name: e.target.value })"
+            userCode={userCode[6]}
+            onChange={(e) => updateUserCode(6, e.target.value)}
+            onCheck={() => checkAnswer(6)}
+            feedback={feedback[6]}
+            rows={3}
+          />
         )}
 
         <div className="problem-workspace">
@@ -911,26 +756,21 @@ setItems(items.filter(item => item.id !== id))`}</pre>
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(6)} className="hint-btn">
-            {showHint[6] ? "힌트 숨기기" : "힌트 보기"}
-          </button>
-          <button onClick={() => toggleAnswer(6)} className="answer-btn">
-            {showAnswer[6] ? "정답 숨기기" : "정답 보기"}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[6]}
+          showAnswer={showAnswer[6]}
+          onToggleHint={() => toggleHint(6)}
+          onToggleAnswer={() => toggleAnswer(6)}
+        />
 
         {showHint[6] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> 객체 spread 연산자{" "}
-            <code>{"{...user }"}</code>를 사용하여 기존 속성을 복사하고, 변경할
-            속성만 덮어쓰세요.
-          </div>
+          <HintBox>
+            객체 spread 연산자 <code>{"{...user }"}</code>를 사용하여 기존 속성을 복사하고, 변경할 속성만 덮어쓰세요.
+          </HintBox>
         )}
 
         {showAnswer[6] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`const [user, setUser] = useState({ name: '', age: '' })
 
 // 이름 변경:
@@ -938,34 +778,28 @@ setUser({ ...user, name: e.target.value })
 
 // 나이 변경:
 setUser({ ...user, age: e.target.value })`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 7: 함수형 업데이트 (20점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 7. 함수형 업데이트 (20점)</h2>
-          <div className="header-right">
-            <span className="difficulty hard">난이도: ⭐⭐⭐</span>
-            {isCorrect[7] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>+5 버튼을 3번 클릭하면 정확히 15가 증가해야 합니다</li>
-            <li>연속으로 빠르게 클릭해도 모든 클릭이 반영되어야 합니다</li>
-            <li>함수형 업데이트를 사용해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 7. 함수형 업데이트 (20점)"
+          difficulty="hard"
+          isCorrect={isCorrect[7]}
+        />
+        <ProblemDescription
+          requirements={[
+            "+5 버튼을 3번 클릭하면 정확히 15가 증가해야 합니다",
+            "연속으로 빠르게 클릭해도 모든 클릭이 반영되어야 합니다",
+            "함수형 업데이트를 사용해야 합니다"
+          ]}
+        />
 
         {mode === "practice" && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">함수형 업데이트를 사용하세요:</p>
-            <div className="code-template">
-              <pre>{`const [complexCount, setComplexCount] = useState(0)
+          <CodeEditor
+            codeTemplate={`const [complexCount, setComplexCount] = useState(0)
 
 <button onClick={() => {
   // +5 버튼: 여기에 코드를 작성하세요
@@ -980,27 +814,15 @@ setUser({ ...user, age: e.target.value })`}</pre>
 <button onClick={() => {
   // -5 버튼: 여기에 코드를 작성하세요
 
-}}>-5</button>`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="함수형 업데이트를 사용하세요&#10;예: setComplexCount(prev => prev + 5)"
-              value={userCode[7]}
-              onChange={(e) => updateUserCode(7, e.target.value)}
-              rows={3}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(7)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[7] === "correct" && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[7] === "incorrect" && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}}>-5</button>`}
+            hint="함수형 업데이트를 사용하세요:"
+            placeholder="함수형 업데이트를 사용하세요&#10;예: setComplexCount(prev => prev + 5)"
+            userCode={userCode[7]}
+            onChange={(e) => updateUserCode(7, e.target.value)}
+            onCheck={() => checkAnswer(7)}
+            feedback={feedback[7]}
+            rows={3}
+          />
         )}
 
         <div className="problem-workspace">
@@ -1051,25 +873,21 @@ setUser({ ...user, age: e.target.value })`}</pre>
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(7)} className="hint-btn">
-            {showHint[7] ? "힌트 숨기기" : "힌트 보기"}
-          </button>
-          <button onClick={() => toggleAnswer(7)} className="answer-btn">
-            {showAnswer[7] ? "정답 숨기기" : "정답 보기"}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[7]}
+          showAnswer={showAnswer[7]}
+          onToggleHint={() => toggleHint(7)}
+          onToggleAnswer={() => toggleAnswer(7)}
+        />
 
         {showHint[7] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> setState에 함수를 전달하면, 이전 상태를
-            인자로 받을 수 있습니다. 이를 함수형 업데이트라고 합니다.
-          </div>
+          <HintBox>
+            setState에 함수를 전달하면, 이전 상태를 인자로 받을 수 있습니다. 이를 함수형 업데이트라고 합니다.
+          </HintBox>
         )}
 
         {showAnswer[7] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`const [complexCount, setComplexCount] = useState(0)
 
 // 함수형 업데이트 사용:
@@ -1079,64 +897,23 @@ onClick={() => setComplexCount(prev => prev - 5)}
 
 // 직접 값 설정도 가능:
 onClick={() => setComplexCount(0)}`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 결과 요약 */}
-      <section className="example-section result-section">
-        <h2>🎯 테스트 결과</h2>
-        <div className="final-score">
-          <h3>최종 점수: {calculateScore()}점 / 100점</h3>
-          {calculateScore() === 100 && (
-            <p className="congrats">
-              🎉 완벽합니다! useState를 완전히 이해하셨습니다!
-            </p>
-          )}
-          {calculateScore() >= 70 && calculateScore() < 100 && (
-            <p className="good">
-              👍 잘하셨습니다! 조금만 더 연습하면 완벽해요!
-            </p>
-          )}
-          {calculateScore() >= 40 && calculateScore() < 70 && (
-            <p className="okay">
-              💪 괜찮습니다! 힌트를 참고하여 더 연습해보세요!
-            </p>
-          )}
-          {calculateScore() < 40 && (
-            <p className="need-practice">
-              📚 정답을 확인하고 다시 한번 연습해보세요!
-            </p>
-          )}
-        </div>
-
-        <div className="review-list">
-          <h4>학습 체크리스트:</h4>
-          <ul>
-            <li className={isCorrect[1] ? "completed" : ""}>
-              {isCorrect[1] ? "✅" : "⬜"} 기본 useState 사용법
-            </li>
-            <li className={isCorrect[2] ? "completed" : ""}>
-              {isCorrect[2] ? "✅" : "⬜"} 문자열 state 관리
-            </li>
-            <li className={isCorrect[3] ? "completed" : ""}>
-              {isCorrect[3] ? "✅" : "⬜"} Boolean state 토글
-            </li>
-            <li className={isCorrect[4] ? "completed" : ""}>
-              {isCorrect[4] ? "✅" : "⬜"} 여러 값 중 선택
-            </li>
-            <li className={isCorrect[5] ? "completed" : ""}>
-              {isCorrect[5] ? "✅" : "⬜"} 배열 state 관리 (추가/삭제)
-            </li>
-            <li className={isCorrect[6] ? "completed" : ""}>
-              {isCorrect[6] ? "✅" : "⬜"} 객체 state 불변성 유지
-            </li>
-            <li className={isCorrect[7] ? "completed" : ""}>
-              {isCorrect[7] ? "✅" : "⬜"} 함수형 업데이트
-            </li>
-          </ul>
-        </div>
-      </section>
+      <ResultSection
+        score={calculateScore()}
+        checklistItems={[
+          { label: "기본 useState 사용법", isCorrect: isCorrect[1] },
+          { label: "문자열 state 관리", isCorrect: isCorrect[2] },
+          { label: "Boolean state 토글", isCorrect: isCorrect[3] },
+          { label: "여러 값 중 선택", isCorrect: isCorrect[4] },
+          { label: "배열 state 관리 (추가/삭제)", isCorrect: isCorrect[5] },
+          { label: "객체 state 불변성 유지", isCorrect: isCorrect[6] },
+          { label: "함수형 업데이트", isCorrect: isCorrect[7] }
+        ]}
+      />
     </div>
   );
 }

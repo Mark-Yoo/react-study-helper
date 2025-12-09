@@ -1,10 +1,10 @@
-# React Hooks 연습 프로젝트
+# React 연습 프로젝트
 
-React Hooks를 학습하고 연습하기 위한 인터랙티브 학습 플랫폼입니다.
+JavaScript ES6+와 React Hooks를 학습하고 연습하기 위한 인터랙티브 학습 플랫폼입니다.
 
 ## 📋 프로젝트 소개
 
-이 프로젝트는 React의 주요 Hooks를 단계별로 학습할 수 있도록 설계된 연습 애플리케이션입니다. 각 Hook에 대한 실습 문제를 풀어보면서 실제로 코드를 작성하고 즉시 피드백을 받을 수 있습니다.
+이 프로젝트는 JavaScript 기초 문법과 React의 주요 Hooks를 단계별로 학습할 수 있도록 설계된 연습 애플리케이션입니다. 각 주제에 대한 실습 문제를 풀어보면서 실제로 코드를 작성하고 즉시 피드백을 받을 수 있습니다.
 
 ### 주요 기능
 
@@ -17,6 +17,21 @@ React Hooks를 학습하고 연습하기 위한 인터랙티브 학습 플랫폼
 - **실시간 점수 계산**: 학습 진행도를 점수로 확인
 
 ## 📚 학습 내용
+
+### JavaScript 기초
+
+### ✅ 05. JavaScript 빌드업 (완료)
+React 개발에 필요한 JavaScript ES6+ 문법을 학습합니다.
+- 화살표 함수 (Arrow Function)
+- 구조 분해 할당 (Destructuring)
+- 전개 연산자 (Spread Operator)
+- 배열 메서드 (Array Methods - map, filter, reduce)
+- 나머지 매개변수 (Rest Parameters)
+- 템플릿 리터럴 (Template Literals)
+- 삼항 연산자 (Ternary Operator)
+- 고차 함수 (Higher-Order Functions)
+
+### React Hooks
 
 ### ✅ 01. useState (완료)
 컴포넌트의 상태 관리를 위한 기본 Hook을 학습합니다.
@@ -93,18 +108,21 @@ npm run preview
 React-practice/
 ├── src/
 │   ├── pages/
-│   │   ├── Home.jsx          # 홈 페이지
-│   │   ├── 01-UseState.jsx   # useState 학습 페이지
-│   │   └── 02-UseEffect.jsx  # useEffect 학습 페이지
-│   ├── App.jsx                # 메인 앱 컴포넌트
-│   ├── App.css                # 스타일
-│   └── main.jsx               # 앱 진입점
+│   │   ├── Home.jsx           # 홈 페이지
+│   │   ├── 01-UseState.jsx    # useState 학습 페이지
+│   │   ├── 02-UseEffect.jsx   # useEffect 학습 페이지
+│   │   └── 05-Buildup.jsx     # JavaScript ES6+ 학습 페이지
+│   ├── App.jsx                 # 메인 앱 컴포넌트
+│   ├── App.css                 # 스타일
+│   └── main.jsx                # 앱 진입점
 ├── package.json
 └── vite.config.js
 ```
 
 ## 🎯 학습 목표
 
+- JavaScript ES6+ 최신 문법 완전 정복
+- React 개발에 필수적인 JavaScript 패턴 이해
 - React Hooks의 기본 개념과 사용법 이해
 - 실전에서 자주 사용되는 패턴 학습
 - 상태 관리의 불변성(Immutability) 이해

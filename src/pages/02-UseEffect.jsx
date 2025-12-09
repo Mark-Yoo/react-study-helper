@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react'
 import '../App.css'
+import {
+  TestInfo,
+  ProblemHeader,
+  ProblemDescription,
+  CodeEditor,
+  ProblemControls,
+  HintBox,
+  AnswerBox,
+  ResultSection
+} from '../components'
 
 function UseEffect() {
   // 모드 관리: 'view' (정답 보기) 또는 'practice' (연습 모드)
@@ -229,88 +239,45 @@ function UseEffect() {
     <div className="app">
       <h1>useEffect 테스트</h1>
 
-      <div className="test-info example-section">
-        <h2>📝 테스트 안내</h2>
-        <p>각 문제의 요구사항을 읽고 useEffect를 사용하여 기능을 구현하세요.</p>
-        <p>
-          코드를 작성한 후 "코드 확인" 버튼을 클릭하여 정답을 확인하세요.
-        </p>
-        <p>
-          정답이 맞으면 해당 기능이 활성화되고 점수가 부여됩니다!
-        </p>
-
-        <div className="mode-toggle">
-          <button
-            className={mode === 'practice' ? 'active' : ''}
-            onClick={() => setMode('practice')}
-          >
-            연습 모드
-          </button>
-          <button
-            className={mode === 'view' ? 'active' : ''}
-            onClick={() => setMode('view')}
-          >
-            정답 보기 모드
-          </button>
-        </div>
-
-        <div className="score-display">
-          <h3>현재 점수: {calculateScore()}점 / 100점</h3>
-          <p className="correct-count">
-            정답 개수: {Object.values(isCorrect).filter(v => v).length} / 7
-          </p>
-        </div>
-      </div>
+      <TestInfo
+        title="useEffect"
+        mode={mode}
+        setMode={setMode}
+        score={calculateScore()}
+        correctCount={Object.values(isCorrect).filter(v => v).length}
+      />
 
       {/* 문제 1: 기본 useEffect (15점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 1. 기본 useEffect - 마운트 시 실행 (15점)</h2>
-          <div className="header-right">
-            <span className="difficulty easy">난이도: ⭐</span>
-            {isCorrect[1] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>컴포넌트가 마운트될 때 메시지를 업데이트해야 합니다</li>
-            <li>useEffect를 사용하여 구현해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 1. 기본 useEffect - 마운트 시 실행 (15점)"
+          difficulty="easy"
+          isCorrect={isCorrect[1]}
+        />
+        <ProblemDescription
+          requirements={[
+            "컴포넌트가 마운트될 때 메시지를 업데이트해야 합니다",
+            "useEffect를 사용하여 구현해야 합니다"
+          ]}
+        />
 
         {mode === 'practice' && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">useEffect를 사용하여 마운트 시 실행되는 코드를 작성하세요:</p>
-            <div className="code-template">
-              <pre>{`const [message1, setMessage1] = useState('아직 로드되지 않음')
+          <CodeEditor
+            codeTemplate={`const [message1, setMessage1] = useState('아직 로드되지 않음')
 
 // 여기에 useEffect를 작성하세요
 useEffect(() => {
   // 여기에 코드를 작성하세요
 
-}, [/* 의존성 배열 */])`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="useEffect를 사용하여 setMessage1을 호출하세요&#10;예: useEffect(() => { setMessage1('컴포넌트가 마운트되었습니다!') }, [])"
-              value={userCode[1]}
-              onChange={(e) => updateUserCode(1, e.target.value)}
-              rows={4}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(1)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[1] === 'correct' && (
-                <span className="feedback correct">✓ 정답입니다! 기능이 활성화되었습니다.</span>
-              )}
-              {feedback[1] === 'incorrect' && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요. 힌트를 참고하세요.</span>
-              )}
-            </div>
-          </div>
+}, [/* 의존성 배열 */])`}
+            hint="useEffect를 사용하여 마운트 시 실행되는 코드를 작성하세요:"
+            placeholder="useEffect를 사용하여 setMessage1을 호출하세요&#10;예: useEffect(() => { setMessage1('컴포넌트가 마운트되었습니다!') }, [])"
+            userCode={userCode[1]}
+            onChange={(e) => updateUserCode(1, e.target.value)}
+            onCheck={() => checkAnswer(1)}
+            feedback={feedback[1]}
+            rows={4}
+          />
         )}
 
         <div className="problem-workspace">
@@ -322,80 +289,59 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(1)} className="hint-btn">
-            {showHint[1] ? '힌트 숨기기' : '힌트 보기'}
-          </button>
-          <button onClick={() => toggleAnswer(1)} className="answer-btn">
-            {showAnswer[1] ? '정답 숨기기' : '정답 보기'}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[1]}
+          showAnswer={showAnswer[1]}
+          onToggleHint={() => toggleHint(1)}
+          onToggleAnswer={() => toggleAnswer(1)}
+        />
 
         {showHint[1] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> useEffect의 첫 번째 인자는 실행할 함수이고, 두 번째 인자는 의존성 배열입니다.
-          </div>
+          <HintBox>
+            useEffect의 첫 번째 인자는 실행할 함수이고, 두 번째 인자는 의존성 배열입니다.
+          </HintBox>
         )}
 
         {showAnswer[1] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`useEffect(() => {
   setMessage1('컴포넌트가 마운트되었습니다! 🎉')
 }, [])`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 2: 의존성 배열 (10점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 2. 의존성 배열 - 특정 값 변경 감지 (10점)</h2>
-          <div className="header-right">
-            <span className="difficulty easy">난이도: ⭐</span>
-            {isCorrect[2] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>count2가 변경될 때마다 메시지를 업데이트해야 합니다</li>
-            <li>의존성 배열에 count2를 포함해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 2. 의존성 배열 - 특정 값 변경 감지 (10점)"
+          difficulty="easy"
+          isCorrect={isCorrect[2]}
+        />
+        <ProblemDescription
+          requirements={[
+            "count2가 변경될 때마다 메시지를 업데이트해야 합니다",
+            "의존성 배열에 count2를 포함해야 합니다"
+          ]}
+        />
 
         {mode === 'practice' && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">count2가 변경될 때마다 실행되는 useEffect를 작성하세요:</p>
-            <div className="code-template">
-              <pre>{`const [count2, setCount2] = useState(0)
+          <CodeEditor
+            codeTemplate={`const [count2, setCount2] = useState(0)
 const [message2, setMessage2] = useState('카운트: 0')
 
 useEffect(() => {
   // 여기에 코드를 작성하세요
 
-}, [/* 의존성 배열 */])`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="count2가 변경될 때마다 message2를 업데이트하세요&#10;예: useEffect(() => { setMessage2(\`카운트: \${count2}\`) }, [count2])"
-              value={userCode[2]}
-              onChange={(e) => updateUserCode(2, e.target.value)}
-              rows={3}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(2)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[2] === 'correct' && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[2] === 'incorrect' && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}, [/* 의존성 배열 */])`}
+            hint="count2가 변경될 때마다 실행되는 useEffect를 작성하세요:"
+            placeholder="count2가 변경될 때마다 message2를 업데이트하세요&#10;예: useEffect(() => { setMessage2(\`카운트: \${count2}\`) }, [count2])"
+            userCode={userCode[2]}
+            onChange={(e) => updateUserCode(2, e.target.value)}
+            onCheck={() => checkAnswer(2)}
+            feedback={feedback[2]}
+            rows={3}
+          />
         )}
 
         <div className="problem-workspace">
@@ -419,54 +365,45 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(2)} className="hint-btn">
-            {showHint[2] ? '힌트 숨기기' : '힌트 보기'}
-          </button>
-          <button onClick={() => toggleAnswer(2)} className="answer-btn">
-            {showAnswer[2] ? '정답 숨기기' : '정답 보기'}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[2]}
+          showAnswer={showAnswer[2]}
+          onToggleHint={() => toggleHint(2)}
+          onToggleAnswer={() => toggleAnswer(2)}
+        />
 
         {showHint[2] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> 의존성 배열에 감시할 변수를 넣으면, 그 변수가 변경될 때마다 effect가 실행됩니다.
-          </div>
+          <HintBox>
+            의존성 배열에 감시할 변수를 넣으면, 그 변수가 변경될 때마다 effect가 실행됩니다.
+          </HintBox>
         )}
 
         {showAnswer[2] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`useEffect(() => {
   setMessage2(\`카운트가 변경되었습니다: \${count2}\`)
 }, [count2])`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 3: cleanup 함수 (10점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 3. cleanup 함수 - 타이머 정리 (10점)</h2>
-          <div className="header-right">
-            <span className="difficulty medium">난이도: ⭐⭐</span>
-            {isCorrect[3] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>타이머가 실행 중일 때 1초마다 초를 증가시켜야 합니다</li>
-            <li>cleanup 함수를 사용하여 타이머를 정리해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 3. cleanup 함수 - 타이머 정리 (10점)"
+          difficulty="medium"
+          isCorrect={isCorrect[3]}
+        />
+        <ProblemDescription
+          requirements={[
+            "타이머가 실행 중일 때 1초마다 초를 증가시켜야 합니다",
+            "cleanup 함수를 사용하여 타이머를 정리해야 합니다"
+          ]}
+        />
 
         {mode === 'practice' && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">setInterval과 cleanup 함수를 사용하세요:</p>
-            <div className="code-template">
-              <pre>{`useEffect(() => {
+          <CodeEditor
+            codeTemplate={`useEffect(() => {
   if (isRunning3) {
     const timer = setInterval(() => {
       setSeconds3(prev => prev + 1)
@@ -478,27 +415,15 @@ useEffect(() => {
 
     }
   }
-}, [isRunning3])`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="cleanup 함수에서 clearInterval을 호출하세요&#10;예: return () => clearInterval(timer)"
-              value={userCode[3]}
-              onChange={(e) => updateUserCode(3, e.target.value)}
-              rows={3}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(3)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[3] === 'correct' && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[3] === 'incorrect' && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}, [isRunning3])`}
+            hint="setInterval과 cleanup 함수를 사용하세요:"
+            placeholder="cleanup 함수에서 clearInterval을 호출하세요&#10;예: return () => clearInterval(timer)"
+            userCode={userCode[3]}
+            onChange={(e) => updateUserCode(3, e.target.value)}
+            onCheck={() => checkAnswer(3)}
+            feedback={feedback[3]}
+            rows={3}
+          />
         )}
 
         <div className="problem-workspace">
@@ -525,24 +450,21 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(3)} className="hint-btn">
-            {showHint[3] ? '힌트 숨기기' : '힌트 보기'}
-          </button>
-          <button onClick={() => toggleAnswer(3)} className="answer-btn">
-            {showAnswer[3] ? '정답 숨기기' : '정답 보기'}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[3]}
+          showAnswer={showAnswer[3]}
+          onToggleHint={() => toggleHint(3)}
+          onToggleAnswer={() => toggleAnswer(3)}
+        />
 
         {showHint[3] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> useEffect에서 return하는 함수는 cleanup 함수로, 컴포넌트가 언마운트되거나 effect가 다시 실행되기 전에 호출됩니다.
-          </div>
+          <HintBox>
+            useEffect에서 return하는 함수는 cleanup 함수로, 컴포넌트가 언마운트되거나 effect가 다시 실행되기 전에 호출됩니다.
+          </HintBox>
         )}
 
         {showAnswer[3] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`useEffect(() => {
   if (isRunning3) {
     const timer = setInterval(() => {
@@ -552,33 +474,27 @@ useEffect(() => {
     return () => clearInterval(timer)
   }
 }, [isRunning3])`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 4: 빈 의존성 배열 (10점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 4. 빈 의존성 배열 - 마운트 시 한 번만 (10점)</h2>
-          <div className="header-right">
-            <span className="difficulty medium">난이도: ⭐⭐</span>
-            {isCorrect[4] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>컴포넌트 마운트 시 데이터를 한 번만 로드해야 합니다</li>
-            <li>빈 의존성 배열 []을 사용해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 4. 빈 의존성 배열 - 마운트 시 한 번만 (10점)"
+          difficulty="medium"
+          isCorrect={isCorrect[4]}
+        />
+        <ProblemDescription
+          requirements={[
+            "컴포넌트 마운트 시 데이터를 한 번만 로드해야 합니다",
+            "빈 의존성 배열 []을 사용해야 합니다"
+          ]}
+        />
 
         {mode === 'practice' && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">빈 의존성 배열을 사용하여 한 번만 실행되게 하세요:</p>
-            <div className="code-template">
-              <pre>{`const [data4, setData4] = useState(null)
+          <CodeEditor
+            codeTemplate={`const [data4, setData4] = useState(null)
 const [loading4, setLoading4] = useState(true)
 
 useEffect(() => {
@@ -587,27 +503,15 @@ useEffect(() => {
     setData4({ id: 1, title: '데이터 로드 완료!' })
     setLoading4(false)
   }, 1000)
-}, [/* 의존성 배열 */])`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="빈 의존성 배열 []을 사용하세요&#10;예: }, [])"
-              value={userCode[4]}
-              onChange={(e) => updateUserCode(4, e.target.value)}
-              rows={2}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(4)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[4] === 'correct' && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[4] === 'incorrect' && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}, [/* 의존성 배열 */])`}
+            hint="빈 의존성 배열을 사용하여 한 번만 실행되게 하세요:"
+            placeholder="빈 의존성 배열 []을 사용하세요&#10;예: }, [])"
+            userCode={userCode[4]}
+            onChange={(e) => updateUserCode(4, e.target.value)}
+            onCheck={() => checkAnswer(4)}
+            feedback={feedback[4]}
+            rows={2}
+          />
         )}
 
         <div className="problem-workspace">
@@ -626,83 +530,62 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(4)} className="hint-btn">
-            {showHint[4] ? '힌트 숨기기' : '힌트 보기'}
-          </button>
-          <button onClick={() => toggleAnswer(4)} className="answer-btn">
-            {showAnswer[4] ? '정답 숨기기' : '정답 보기'}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[4]}
+          showAnswer={showAnswer[4]}
+          onToggleHint={() => toggleHint(4)}
+          onToggleAnswer={() => toggleAnswer(4)}
+        />
 
         {showHint[4] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> 빈 의존성 배열 []을 사용하면 effect가 마운트 시에만 한 번 실행됩니다.
-          </div>
+          <HintBox>
+            빈 의존성 배열 []을 사용하면 effect가 마운트 시에만 한 번 실행됩니다.
+          </HintBox>
         )}
 
         {showAnswer[4] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`useEffect(() => {
   setTimeout(() => {
     setData4({ id: 1, title: '데이터 로드 완료!' })
     setLoading4(false)
   }, 1000)
 }, [])`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 5: 여러 의존성 (20점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 5. 여러 의존성 - 여러 값 감시 (20점)</h2>
-          <div className="header-right">
-            <span className="difficulty hard">난이도: ⭐⭐⭐</span>
-            {isCorrect[5] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>width5 또는 height5가 변경될 때마다 넓이를 계산해야 합니다</li>
-            <li>의존성 배열에 두 값을 모두 포함해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 5. 여러 의존성 - 여러 값 감시 (20점)"
+          difficulty="hard"
+          isCorrect={isCorrect[5]}
+        />
+        <ProblemDescription
+          requirements={[
+            "width5 또는 height5가 변경될 때마다 넓이를 계산해야 합니다",
+            "의존성 배열에 두 값을 모두 포함해야 합니다"
+          ]}
+        />
 
         {mode === 'practice' && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">여러 의존성을 배열에 넣으세요:</p>
-            <div className="code-template">
-              <pre>{`const [width5, setWidth5] = useState(100)
+          <CodeEditor
+            codeTemplate={`const [width5, setWidth5] = useState(100)
 const [height5, setHeight5] = useState(100)
 const [area5, setArea5] = useState(0)
 
 useEffect(() => {
   setArea5(width5 * height5)
-}, [/* 의존성 배열 */])`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="width5와 height5를 의존성 배열에 넣으세요&#10;예: }, [width5, height5])"
-              value={userCode[5]}
-              onChange={(e) => updateUserCode(5, e.target.value)}
-              rows={2}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(5)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[5] === 'correct' && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[5] === 'incorrect' && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}, [/* 의존성 배열 */])`}
+            hint="여러 의존성을 배열에 넣으세요:"
+            placeholder="width5와 height5를 의존성 배열에 넣으세요&#10;예: }, [width5, height5])"
+            userCode={userCode[5]}
+            onChange={(e) => updateUserCode(5, e.target.value)}
+            onCheck={() => checkAnswer(5)}
+            feedback={feedback[5]}
+            rows={2}
+          />
         )}
 
         <div className="problem-workspace">
@@ -746,54 +629,45 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(5)} className="hint-btn">
-            {showHint[5] ? '힌트 숨기기' : '힌트 보기'}
-          </button>
-          <button onClick={() => toggleAnswer(5)} className="answer-btn">
-            {showAnswer[5] ? '정답 숨기기' : '정답 보기'}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[5]}
+          showAnswer={showAnswer[5]}
+          onToggleHint={() => toggleHint(5)}
+          onToggleAnswer={() => toggleAnswer(5)}
+        />
 
         {showHint[5] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> 의존성 배열에는 여러 값을 쉼표로 구분하여 넣을 수 있습니다. [value1, value2, ...]
-          </div>
+          <HintBox>
+            의존성 배열에는 여러 값을 쉼표로 구분하여 넣을 수 있습니다. [value1, value2, ...]
+          </HintBox>
         )}
 
         {showAnswer[5] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`useEffect(() => {
   setArea5(width5 * height5)
 }, [width5, height5])`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 6: 조건부 effect (15점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 6. 조건부 effect - 조건에 따라 실행 (15점)</h2>
-          <div className="header-right">
-            <span className="difficulty hard">난이도: ⭐⭐⭐</span>
-            {isCorrect[6] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>검색어가 2글자 이상일 때만 검색을 실행해야 합니다</li>
-            <li>useEffect 내부에서 조건을 체크해야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 6. 조건부 effect - 조건에 따라 실행 (15점)"
+          difficulty="hard"
+          isCorrect={isCorrect[6]}
+        />
+        <ProblemDescription
+          requirements={[
+            "검색어가 2글자 이상일 때만 검색을 실행해야 합니다",
+            "useEffect 내부에서 조건을 체크해야 합니다"
+          ]}
+        />
 
         {mode === 'practice' && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">조건문을 사용하여 검색어 길이를 체크하세요:</p>
-            <div className="code-template">
-              <pre>{`useEffect(() => {
+          <CodeEditor
+            codeTemplate={`useEffect(() => {
   if (/* 조건 */) {
     const mockResults = [
       \`\${search6}에 대한 결과 1\`,
@@ -804,27 +678,15 @@ useEffect(() => {
   } else {
     setResults6([])
   }
-}, [search6])`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="search6.length를 체크하세요&#10;예: if (search6.length >= 2)"
-              value={userCode[6]}
-              onChange={(e) => updateUserCode(6, e.target.value)}
-              rows={2}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(6)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[6] === 'correct' && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[6] === 'incorrect' && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}, [search6])`}
+            hint="조건문을 사용하여 검색어 길이를 체크하세요:"
+            placeholder="search6.length를 체크하세요&#10;예: if (search6.length >= 2)"
+            userCode={userCode[6]}
+            onChange={(e) => updateUserCode(6, e.target.value)}
+            onCheck={() => checkAnswer(6)}
+            feedback={feedback[6]}
+            rows={2}
+          />
         )}
 
         <div className="problem-workspace">
@@ -850,24 +712,21 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(6)} className="hint-btn">
-            {showHint[6] ? '힌트 숨기기' : '힌트 보기'}
-          </button>
-          <button onClick={() => toggleAnswer(6)} className="answer-btn">
-            {showAnswer[6] ? '정답 숨기기' : '정답 보기'}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[6]}
+          showAnswer={showAnswer[6]}
+          onToggleHint={() => toggleHint(6)}
+          onToggleAnswer={() => toggleAnswer(6)}
+        />
 
         {showHint[6] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> useEffect 내부에서 조건문을 사용하여 특정 조건에서만 로직을 실행할 수 있습니다.
-          </div>
+          <HintBox>
+            useEffect 내부에서 조건문을 사용하여 특정 조건에서만 로직을 실행할 수 있습니다.
+          </HintBox>
         )}
 
         {showAnswer[6] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`useEffect(() => {
   if (search6.length >= 2) {
     const mockResults = [
@@ -880,34 +739,28 @@ useEffect(() => {
     setResults6([])
   }
 }, [search6])`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 문제 7: 인터벌 관리 (20점) */}
       <section className="example-section problem-section">
-        <div className="problem-header">
-          <h2>문제 7. 인터벌 관리 - 타이머 구현 (20점)</h2>
-          <div className="header-right">
-            <span className="difficulty hard">난이도: ⭐⭐⭐</span>
-            {isCorrect[7] && <span className="badge-correct">✓ 정답</span>}
-          </div>
-        </div>
-        <div className="problem-description">
-          <h3>📌 요구사항:</h3>
-          <ul>
-            <li>타이머가 활성화되면 1초마다 숫자가 증가해야 합니다</li>
-            <li>setInterval을 사용하고 cleanup 함수로 정리해야 합니다</li>
-            <li>isActive7이 변경될 때마다 effect가 실행되어야 합니다</li>
-          </ul>
-        </div>
+        <ProblemHeader
+          title="문제 7. 인터벌 관리 - 타이머 구현 (20점)"
+          difficulty="hard"
+          isCorrect={isCorrect[7]}
+        />
+        <ProblemDescription
+          requirements={[
+            "타이머가 활성화되면 1초마다 숫자가 증가해야 합니다",
+            "setInterval을 사용하고 cleanup 함수로 정리해야 합니다",
+            "isActive7이 변경될 때마다 effect가 실행되어야 합니다"
+          ]}
+        />
 
         {mode === 'practice' && (
-          <div className="code-editor-section">
-            <h4>💻 코드 작성 영역:</h4>
-            <p className="code-hint">setInterval과 cleanup을 모두 구현하세요:</p>
-            <div className="code-template">
-              <pre>{`useEffect(() => {
+          <CodeEditor
+            codeTemplate={`useEffect(() => {
   if (isActive7) {
     const interval = setInterval(() => {
       setTimer7(prev => prev + 1)
@@ -918,27 +771,15 @@ useEffect(() => {
 
     }
   }
-}, [isActive7])`}</pre>
-            </div>
-            <textarea
-              className="code-input"
-              placeholder="setInterval을 사용하고 cleanup에서 clearInterval을 호출하세요"
-              value={userCode[7]}
-              onChange={(e) => updateUserCode(7, e.target.value)}
-              rows={4}
-            />
-            <div className="code-controls">
-              <button onClick={() => checkAnswer(7)} className="check-btn">
-                코드 확인
-              </button>
-              {feedback[7] === 'correct' && (
-                <span className="feedback correct">✓ 정답입니다!</span>
-              )}
-              {feedback[7] === 'incorrect' && (
-                <span className="feedback incorrect">✗ 다시 시도해보세요.</span>
-              )}
-            </div>
-          </div>
+}, [isActive7])`}
+            hint="setInterval과 cleanup을 모두 구현하세요:"
+            placeholder="setInterval을 사용하고 cleanup에서 clearInterval을 호출하세요"
+            userCode={userCode[7]}
+            onChange={(e) => updateUserCode(7, e.target.value)}
+            onCheck={() => checkAnswer(7)}
+            feedback={feedback[7]}
+            rows={4}
+          />
         )}
 
         <div className="problem-workspace">
@@ -967,24 +808,21 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="problem-controls">
-          <button onClick={() => toggleHint(7)} className="hint-btn">
-            {showHint[7] ? '힌트 숨기기' : '힌트 보기'}
-          </button>
-          <button onClick={() => toggleAnswer(7)} className="answer-btn">
-            {showAnswer[7] ? '정답 숨기기' : '정답 보기'}
-          </button>
-        </div>
+        <ProblemControls
+          showHint={showHint[7]}
+          showAnswer={showAnswer[7]}
+          onToggleHint={() => toggleHint(7)}
+          onToggleAnswer={() => toggleAnswer(7)}
+        />
 
         {showHint[7] && (
-          <div className="hint-box">
-            <strong>💡 힌트:</strong> setInterval로 타이머를 만들고, cleanup 함수에서 clearInterval로 정리해야 메모리 누수를 방지할 수 있습니다.
-          </div>
+          <HintBox>
+            setInterval로 타이머를 만들고, cleanup 함수에서 clearInterval로 정리해야 메모리 누수를 방지할 수 있습니다.
+          </HintBox>
         )}
 
         {showAnswer[7] && (
-          <div className="answer-box">
-            <strong>✅ 정답:</strong>
+          <AnswerBox>
             <pre>{`useEffect(() => {
   if (isActive7) {
     const interval = setInterval(() => {
@@ -994,64 +832,23 @@ useEffect(() => {
     return () => clearInterval(interval)
   }
 }, [isActive7])`}</pre>
-          </div>
+          </AnswerBox>
         )}
       </section>
 
       {/* 결과 요약 */}
-      <section className="example-section result-section">
-        <h2>🎯 테스트 결과</h2>
-        <div className="final-score">
-          <h3>최종 점수: {calculateScore()}점 / 100점</h3>
-          {calculateScore() === 100 && (
-            <p className="congrats">
-              🎉 완벽합니다! useEffect를 완전히 이해하셨습니다!
-            </p>
-          )}
-          {calculateScore() >= 70 && calculateScore() < 100 && (
-            <p className="good">
-              👍 잘하셨습니다! 조금만 더 연습하면 완벽해요!
-            </p>
-          )}
-          {calculateScore() >= 40 && calculateScore() < 70 && (
-            <p className="okay">
-              💪 괜찮습니다! 힌트를 참고하여 더 연습해보세요!
-            </p>
-          )}
-          {calculateScore() < 40 && (
-            <p className="need-practice">
-              📚 정답을 확인하고 다시 한번 연습해보세요!
-            </p>
-          )}
-        </div>
-
-        <div className="review-list">
-          <h4>학습 체크리스트:</h4>
-          <ul>
-            <li className={isCorrect[1] ? 'completed' : ''}>
-              {isCorrect[1] ? '✅' : '⬜'} 기본 useEffect 사용법
-            </li>
-            <li className={isCorrect[2] ? 'completed' : ''}>
-              {isCorrect[2] ? '✅' : '⬜'} 의존성 배열 사용
-            </li>
-            <li className={isCorrect[3] ? 'completed' : ''}>
-              {isCorrect[3] ? '✅' : '⬜'} cleanup 함수
-            </li>
-            <li className={isCorrect[4] ? 'completed' : ''}>
-              {isCorrect[4] ? '✅' : '⬜'} 빈 의존성 배열 []
-            </li>
-            <li className={isCorrect[5] ? 'completed' : ''}>
-              {isCorrect[5] ? '✅' : '⬜'} 여러 의존성 관리
-            </li>
-            <li className={isCorrect[6] ? 'completed' : ''}>
-              {isCorrect[6] ? '✅' : '⬜'} 조건부 effect 실행
-            </li>
-            <li className={isCorrect[7] ? 'completed' : ''}>
-              {isCorrect[7] ? '✅' : '⬜'} 인터벌 관리와 cleanup
-            </li>
-          </ul>
-        </div>
-      </section>
+      <ResultSection
+        score={calculateScore()}
+        checklistItems={[
+          { label: "기본 useEffect 사용법", isCorrect: isCorrect[1] },
+          { label: "의존성 배열 사용", isCorrect: isCorrect[2] },
+          { label: "cleanup 함수", isCorrect: isCorrect[3] },
+          { label: "빈 의존성 배열 []", isCorrect: isCorrect[4] },
+          { label: "여러 의존성 관리", isCorrect: isCorrect[5] },
+          { label: "조건부 effect 실행", isCorrect: isCorrect[6] },
+          { label: "인터벌 관리와 cleanup", isCorrect: isCorrect[7] }
+        ]}
+      />
     </div>
   )
 }
